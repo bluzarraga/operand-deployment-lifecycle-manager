@@ -3,12 +3,13 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  labels:
-    app.kubernetes.io/managed-by: Helm
+  creationTimestamp: null
+  # labels:
+  #   app.kubernetes.io/instance: operand-deployment-lifecycle-manager
+  #   app.kubernetes.io/managed-by: operand-deployment-lifecycle-manager
+  #   app.kubernetes.io/name: operand-deployment-lifecycle-manager
   name: operandregistries.operator.ibm.com
 spec:
-  conversion:
-    strategy: None
   group: operator.ibm.com
   names:
     kind: OperandRegistry
@@ -2152,22 +2153,7 @@ spec:
       status: {}
 status:
   acceptedNames:
-    kind: OperandRegistry
-    listKind: OperandRegistryList
-    plural: operandregistries
-    shortNames:
-    - opreg
-    singular: operandregistry
-  conditions:
-  - lastTransitionTime: "2024-12-12T15:40:09Z"
-    message: no conflicts found
-    reason: NoConflicts
-    status: "True"
-    type: NamesAccepted
-  - lastTransitionTime: "2024-12-12T15:40:09Z"
-    message: the initial names have been accepted
-    reason: InitialNamesAccepted
-    status: "True"
-    type: Established
-  storedVersions:
-  - v1alpha1
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
