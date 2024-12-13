@@ -1,13 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "2"
   labels:
-    app.kubernetes.io/instance: operand-deployment-lifecycle-manager
-    app.kubernetes.io/managed-by: operand-deployment-lifecycle-manager
-    app.kubernetes.io/name: operand-deployment-lifecycle-manager
-    operators.coreos.com/ibm-odlm.cs-op: ""
+    app.kubernetes.io/managed-by: Helm
     productName: IBM_Cloud_Platform_Common_Services
   name: operand-deployment-lifecycle-manager
   namespace: {{ .Values.namespace }}
@@ -157,10 +152,10 @@ spec:
         description: The Operand Deployment Lifecycle Manager provides a Kubernetes
           CRD-based API to manage the lifecycle of operands.
         nss.operator.ibm.com/managed-operators: ibm-odlm
-        olm.operatorGroup: common-service
-        olm.operatorNamespace: cs-op
-        olm.skipRange: '>=1.2.0 <4.3.8'
-        olm.targetNamespaces: cs-op
+        # olm.operatorGroup: common-service
+        # olm.operatorNamespace: cs-op
+        # olm.skipRange: '>=1.2.0 <4.3.8'
+        # olm.targetNamespaces: cs-op
         operatorframework.io/properties: '{"properties":[{"type":"olm.gvk","value":{"group":"operator.ibm.com","kind":"OperandBindInfo","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"operator.ibm.com","kind":"OperandConfig","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"operator.ibm.com","kind":"OperandRegistry","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"operator.ibm.com","kind":"OperandRequest","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"operator.ibm.com","kind":"OperatorConfig","version":"v1alpha1"}},{"type":"olm.package","value":{"packageName":"ibm-odlm","version":"4.3.8"}}]}'
         operators.openshift.io/infrastructure-features: '["disconnected"]'
         operators.operatorframework.io/builder: operator-sdk-v1.32.0
@@ -172,9 +167,7 @@ spec:
         support: IBM
       creationTimestamp: null
       labels:
-        app.kubernetes.io/instance: operand-deployment-lifecycle-manager
-        app.kubernetes.io/managed-by: operand-deployment-lifecycle-manager
-        app.kubernetes.io/name: operand-deployment-lifecycle-manager
+        app.kubernetes.io/managed-by: Helm
         intent: projected
         name: operand-deployment-lifecycle-manager
         productName: IBM_Cloud_Platform_Common_Services
