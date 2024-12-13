@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: "2024-12-12T15:40:09Z"
+  labels:
+    olm.managed: "true"
+  name: operand-deployment-lifecycle-manager.v4.3.8
+  namespace: cs-op
+  ownerReferences:
+  - apiVersion: operators.coreos.com/v2
+    blockOwnerDeletion: false
+    controller: true
+    kind: OperatorCondition
+    name: operand-deployment-lifecycle-manager.v4.3.8
+    uid: 751d89db-d52c-4b61-85ba-f1b3cfe7bc33
+  resourceVersion: "39800"
+  uid: 066d34ad-332e-4f15-88b3-90e13c82b361
+rules:
+- apiGroups:
+  - operators.coreos.com
+  resourceNames:
+  - operand-deployment-lifecycle-manager.v4.3.8
+  resources:
+  - operatorconditions
+  verbs:
+  - get
+  - update
+  - patch

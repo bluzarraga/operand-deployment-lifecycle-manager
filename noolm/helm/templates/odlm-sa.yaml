@@ -1,0 +1,9 @@
+apiVersion: v1
+# imagePullSecrets:
+# - name: operand-deployment-lifecycle-manager-dockercfg-dwkfs
+kind: ServiceAccount
+metadata:
+  name: operand-deployment-lifecycle-manager
+  namespace: {{ .Values.namespace }}
+# secrets:
+# - name: operand-deployment-lifecycle-manager-dockercfg-dwkfs

@@ -1,0 +1,389 @@
+apiVersion: operator.ibm.com/v1alpha1
+kind: OperandRegistry
+metadata:
+  annotations:
+    excluded-catalogsource: certified-operators,community-operators,redhat-marketplace,ibm-cp-automation-foundation-catalog,operatorhubio-catalog
+    status-monitored-services: ibm-idp-config-ui-operator,ibm-mongodb-operator,ibm-im-operator
+    version: 4.9.0
+  labels:
+    operator.ibm.com/managedByCsOperator: "true"
+  name: common-service
+  namespace: {{ .Values.namespace }}
+spec:
+  operators:
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-licensing-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-licensing-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-mongodb-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-mongodb-operator-app
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-cert-manager-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-cert-manager-operator
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-iam-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-healthcheck-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-healthcheck-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-commonui-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-management-ingress-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-management-ingress-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-ingress-nginx-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-ingress-nginx-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-auditlogging-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-auditlogging-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-platform-api-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-platform-api-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-monitoring-grafana-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-monitoring-grafana-operator-app
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-zen-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v3.23
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-zen-cpp-operator
+    namespace: {{ .Values.namespace }}
+    packageName: zen-cpp-operator
+    scope: public
+  - channel: v1.0
+    installPlanApproval: Automatic
+    name: ibm-user-management-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-user-management-operator
+    scope: public
+  - channel: v1.3
+    installPlanApproval: Automatic
+    name: ibm-websphere-liberty
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-websphere-liberty
+    scope: public
+  - channel: v1.2
+    installPlanApproval: Automatic
+    name: ibm-redis-cp-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-redis-cp
+    scope: public
+  - channel: v4.8
+    installPlanApproval: Automatic
+    name: ibm-im-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.2
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: ibm-im-mongodb-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-mongodb-operator-app
+  - channel: v3
+    installPlanApproval: Automatic
+    name: ibm-events-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-events-operator
+    scope: public
+  - channel: v6.0
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v4.5
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: stable
+    installPlanApproval: Automatic
+    name: cloud-native-postgresql
+    namespace: {{ .Values.namespace }}
+    operatorConfig: cloud-native-postgresql-operator-config
+    packageName: cloud-native-postgresql
+    scope: public
+  - channel: stable
+    installMode: no-op
+    installPlanApproval: Automatic
+    name: internal-use-only-edb
+    namespace: {{ .Values.namespace }}
+    packageName: cloud-native-postgresql
+    scope: public
+  - channel: stable-v1.22
+    fallbackChannels:
+    - stable
+    installPlanApproval: Automatic
+    name: cloud-native-postgresql-v1.22
+    namespace: {{ .Values.namespace }}
+    operatorConfig: cloud-native-postgresql-operator-config
+    packageName: cloud-native-postgresql
+    scope: public
+  - channel: alpha
+    installPlanApproval: Automatic
+    name: ibm-user-data-services-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-user-data-services-operator
+    scope: public
+  - channel: v3
+    installPlanApproval: Automatic
+    name: ibm-bts-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-bts-operator
+    scope: public
+  - channel: v3.34
+    installPlanApproval: Automatic
+    name: ibm-bts-operator-v3.34
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-bts-operator
+    scope: public
+  - channel: v3.35
+    installPlanApproval: Automatic
+    name: ibm-bts-operator-v3.35
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-bts-operator
+    scope: public
+  - channel: v1.3
+    installPlanApproval: Automatic
+    name: ibm-automation-flink
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-automation-flink
+    scope: public
+  - channel: v1.3
+    installPlanApproval: Automatic
+    name: ibm-automation-elastic
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-automation-elastic
+    scope: public
+  - channel: v1.1
+    installPlanApproval: Automatic
+    name: ibm-elasticsearch-operator
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-elasticsearch-operator
+    scope: public
+  - channel: v2.0
+    installPlanApproval: Automatic
+    name: ibm-opencontent-flink
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-opencontent-flink
+    scope: public
+  - channel: v4.0
+    installPlanApproval: Automatic
+    name: ibm-im-mongodb-operator-v4.0
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-mongodb-operator-app
+  - channel: v4.1
+    installPlanApproval: Automatic
+    name: ibm-im-mongodb-operator-v4.1
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-mongodb-operator-app
+  - channel: v4.2
+    installPlanApproval: Automatic
+    name: ibm-im-mongodb-operator-v4.2
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-mongodb-operator-app
+  - channel: v4.0
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.0
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.1
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.1
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.2
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.2
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.3
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.3
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.4
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.4
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.5
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.5
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.6
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.6
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.7
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.7
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.8
+    installPlanApproval: Automatic
+    name: ibm-im-operator-v4.8
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-iam-operator
+    scope: public
+  - channel: v4.0
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.0
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.1
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.1
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.2
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.2
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.3
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.3
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.4
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.4
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.5
+    installPlanApproval: Automatic
+    name: ibm-idp-config-ui-operator-v4.5
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-commonui-operator-app
+    scope: public
+  - channel: v4.0
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v4.0
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v4.1
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v4.1
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v4.2
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v4.2
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v4.3
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v4.3
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v4.4
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v4.4
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: v6.0
+    installPlanApproval: Automatic
+    name: ibm-platformui-operator-v6.0
+    namespace: {{ .Values.namespace }}
+    packageName: ibm-zen-operator
+    scope: public
+  - channel: stable-v24
+    fallbackChannels:
+    - stable-v22
+    installPlanApproval: Automatic
+    name: keycloak-operator
+    namespace: {{ .Values.servicesNamespace }}
+    packageName: rhbk-operator
+    scope: public
+  - channel: stable
+    fallbackChannels:
+    - stable-v1.22
+    installPlanApproval: Automatic
+    name: edb-keycloak
+    namespace: {{ .Values.namespace }}
+    operatorConfig: cloud-native-postgresql-operator-config
+    packageName: cloud-native-postgresql
+    scope: public
+  - channel: stable-v1.22
+    fallbackChannels:
+    - stable
+    installPlanApproval: Automatic
+    name: common-service-postgresql
+    namespace: {{ .Values.namespace }}
+    operatorConfig: cloud-native-postgresql-operator-config
+    packageName: cloud-native-postgresql
+    scope: public

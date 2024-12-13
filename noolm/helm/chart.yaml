@@ -1,0 +1,8 @@
+apiVersion: v4
+name: odlm
+description: Operand Deployment Lifecycle Manager
+type: application
+version: "0.4.3"
+appVersion: "4.3.9"
+sources:
+  - https://github.com/bluzarraga/operand-deployment-lifecycle-manager/tree/master
