@@ -123,7 +123,7 @@ spec:
     installPlanApproval: Automatic
     name: ibm-im-operator
     namespace: {{ .Values.namespace }}
-    packageName: ibm-iam-operator
+    packageName: ibm-zen-operator #test value
     scope: public
   - channel: v4.2
     installMode: no-op
