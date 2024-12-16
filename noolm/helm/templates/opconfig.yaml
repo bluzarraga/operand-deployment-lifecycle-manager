@@ -482,7 +482,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: restart-edb-pod
                 resources:
@@ -524,7 +524,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: edb-license
                 resources:
@@ -548,12 +548,12 @@ spec:
       force: true
       kind: Job
       name: create-postgres-license-config
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: v1
       force: true
       kind: ServiceAccount
       name: edb-license-sa
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         rules:
@@ -573,7 +573,7 @@ spec:
       force: true
       kind: Role
       name: edb-license-role
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         roleRef:
@@ -586,7 +586,7 @@ spec:
       force: true
       kind: RoleBinding
       name: edb-license-rolebinding
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
   - name: cloud-native-postgresql-v1.22
     resources:
     - apiVersion: batch/v1
@@ -626,7 +626,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: restart-edb-pod
                 resources:
@@ -668,7 +668,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: edb-license
                 resources:
@@ -692,12 +692,12 @@ spec:
       force: true
       kind: Job
       name: create-postgres-license-config
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: v1
       force: true
       kind: ServiceAccount
       name: edb-license-sa
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         rules:
@@ -717,7 +717,7 @@ spec:
       force: true
       kind: Role
       name: edb-license-role
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         roleRef:
@@ -730,7 +730,7 @@ spec:
       force: true
       kind: RoleBinding
       name: edb-license-rolebinding
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
   - name: ibm-bts-operator
     spec:
       operandRequest:
@@ -1204,7 +1204,7 @@ spec:
             adopters
           operand: ibm-user-management-operator
           registry: common-service
-          registryNamespace: cs-serv
+          registryNamespace: {{ .Values.servicesNamespace }}
       force: true
       kind: OperandBindInfo
       name: ibm-user-mgmt-bindinfo
@@ -1319,7 +1319,7 @@ spec:
           - operands:
             - name: edb-keycloak
             registry: common-service
-            registryNamespace: cs-serv
+            registryNamespace: {{ .Values.servicesNamespace }}
       force: true
       kind: OperandRequest
       name: edb-keycloak-request
@@ -1336,7 +1336,7 @@ spec:
           description: Binding information that should be accessible to Keycloak adopters
           operand: keycloak-operator
           registry: common-service
-          registryNamespace: cs-serv
+          registryNamespace: {{ .Values.servicesNamespace }}
       force: true
       kind: OperandBindInfo
       name: keycloak-bindinfo
@@ -1628,7 +1628,7 @@ spec:
                 name: cpfs-opcon-cs-keycloak-service
                 path: .metadata.name
               required: true
-          SERVICE_NAMESPACE: cs-serv
+          SERVICE_NAMESPACE: {{ .Values.servicesNamespace }}
       force: true
       kind: ConfigMap
       name: cs-keycloak-service
@@ -1709,7 +1709,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: restart-edb-pod
                 resources:
@@ -1751,7 +1751,7 @@ spec:
                       configMapKeyRef:
                         key: edb-postgres-license-provider-image
                         name: cloud-native-postgresql-image-list
-                        namespace: cs-op
+                        namespace: {{ .Values.namespace }}
                       required: true
                 name: edb-license
                 resources:
@@ -1775,12 +1775,12 @@ spec:
       force: true
       kind: Job
       name: create-postgres-license-config
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: v1
       force: true
       kind: ServiceAccount
       name: edb-license-sa
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         rules:
@@ -1800,7 +1800,7 @@ spec:
       force: true
       kind: Role
       name: edb-license-role
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - apiVersion: rbac.authorization.k8s.io/v1
       data:
         roleRef:
@@ -1813,7 +1813,7 @@ spec:
       force: true
       kind: RoleBinding
       name: edb-license-rolebinding
-      namespace: cs-op
+      namespace: {{ .Values.namespace }}
     - annotations:
         k8s.enterprisedb.io/addons: '["velero"]'
         k8s.enterprisedb.io/snapshotAllowColdBackupOnPrimary: enabled
@@ -1833,7 +1833,7 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 name: postgresql-operator-controller-manager-config
-                namespace: cs-op
+                namespace: {{ .Values.namespace }}
                 path: .metadata.annotations.ibm-license-key-applied
               required: true
           enableSuperuserAccess: true
@@ -1846,7 +1846,7 @@ spec:
                 configMapKeyRef:
                   key: ibm-postgresql-14-operand-image
                   name: cloud-native-postgresql-image-list
-                  namespace: cs-op
+                  namespace: {{ .Values.namespace }}
                 required: true
           imagePullSecrets:
           - name: ibm-entitlement-key
@@ -1887,7 +1887,7 @@ spec:
           - operands:
             - name: cloud-native-postgresql-v1.22
             registry: common-service
-            registryNamespace: cs-serv
+            registryNamespace: {{ .Values.servicesNamespace }}
       force: true
       kind: OperandRequest
       name: postgresql-operator-request
@@ -1917,17 +1917,17 @@ spec:
         spec:
           dnsNames:
           - common-service-db
-          - common-service-db.cs-serv
-          - common-service-db.cs-serv.svc
+          - common-service-db.{{ .Values.servicesNamespace }}
+          - common-service-db.{{ .Values.servicesNamespace }}.svc
           - common-service-db-r
-          - common-service-db-r.cs-serv
-          - common-service-db-r.cs-serv.svc
+          - common-service-db-r.{{ .Values.servicesNamespace }}
+          - common-service-db-r.{{ .Values.servicesNamespace }}.svc
           - common-service-db-ro
-          - common-service-db-ro.cs-serv
-          - common-service-db-ro.cs-serv.svc
+          - common-service-db-ro.{{ .Values.servicesNamespace }}
+          - common-service-db-ro.{{ .Values.servicesNamespace }}.svc
           - common-service-db-rw
-          - common-service-db-rw.cs-serv
-          - common-service-db-rw.cs-serv.svc
+          - common-service-db-rw.{{ .Values.servicesNamespace }}
+          - common-service-db-rw.{{ .Values.servicesNamespace }}.svc
           duration: 8760h0m0s
           issuerRef:
             kind: Issuer
@@ -2001,7 +2001,7 @@ spec:
             Postgresql Adopters
           operand: common-service-postgresql
           registry: common-service
-          registryNamespace: cs-serv
+          registryNamespace: {{ .Values.servicesNamespace }}
       force: true
       kind: OperandBindInfo
       name: common-service-postgresql-bindinfo
@@ -2061,7 +2061,7 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 name: postgresql-operator-controller-manager-config
-                namespace: cs-op
+                namespace: {{ .Values.namespace }}
                 path: .metadata.annotations.ibm-license-key-applied
               required: true
           enableSuperuserAccess: true
@@ -2071,7 +2071,7 @@ spec:
                 configMapKeyRef:
                   key: ibm-postgresql-16-operand-image
                   name: cloud-native-postgresql-image-list
-                  namespace: cs-op
+                  namespace: {{ .Values.namespace }}
                 required: true
           imagePullSecrets:
           - name: ibm-entitlement-key
