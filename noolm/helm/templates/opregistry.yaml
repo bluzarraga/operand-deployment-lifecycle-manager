@@ -119,11 +119,11 @@ spec:
     namespace: {{ .Values.namespace }}
     packageName: ibm-redis-cp
     scope: public
-  - channel: v4.8
+  - channel: v3 #test value
     installPlanApproval: Automatic
     name: ibm-im-operator
     namespace: {{ .Values.namespace }}
-    packageName: ibm-zen-operator #test value
+    packageName: ibm-events-operator #test value
     scope: public
   - channel: v4.2
     installMode: no-op
