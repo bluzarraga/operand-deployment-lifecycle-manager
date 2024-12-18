@@ -1,0 +1,29 @@
+apiVersion: operator.ibm.com/v1alpha1
+kind: OperandBindInfo
+metadata:
+  finalizers:
+  - finalizer.bindinfo.ibm.com
+  name: ibm-iam-bindinfo
+spec:
+  bindings:
+    public-auth-cert:
+      secret: platform-auth-secret
+    public-auth-config:
+      configmap: platform-auth-idp
+    public-auth-creds:
+      secret: platform-auth-idp-credentials
+    public-cam-map:
+      configmap: oauth-client-map
+    public-cam-secret:
+      secret: oauth-client-secret
+    public-ibmcloud-config:
+      configmap: ibmcloud-cluster-info
+    public-ibmcloudca-secret:
+      secret: ibmcloud-cluster-ca-cert
+    public-oidc-creds:
+      secret: platform-oidc-credentials
+    public-scim-creds:
+      secret: platform-auth-scim-credentials
+  description: Binding information that should be accessible to iam adopters
+  operand: ibm-im-operator
+  registry: common-service

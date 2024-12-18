@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  edb-postgres-license-provider-image: cp.icr.io/cp/cpd/edb-postgres-license-provider@sha256:6b5c69987f8967f5d0256a38e8759dad15480cf3c0eada9eb5fc71c51ed1cee9
+  ibm-postgresql-12-operand-image: icr.io/cpopen/edb/postgresql:12.20@sha256:a4960e2d7350ab6beccd37e5e977ce3e3e06145216fc3c07f6df866fa9927b2f
+  ibm-postgresql-13-operand-image: icr.io/cpopen/edb/postgresql:13.16@sha256:ffb17e14727dbea67533decb12eed011a6138e191c947eda0c136443b823b867
+  ibm-postgresql-14-operand-image: icr.io/cpopen/edb/postgresql:14.13@sha256:11317eb23ce45d74e35fd2471d96a32e4a28c29a0367734eb61f5a3d6aff2cff
+  ibm-postgresql-15-operand-image: icr.io/cpopen/edb/postgresql:15.8@sha256:63c1bfc431fba3eba7a2e803d5d24c48425dbe7d1e9b1dec9832b30717ce8753
+  ibm-postgresql-16-operand-image: icr.io/cpopen/edb/postgresql:16.4@sha256:40f729ded0e488271950daf010c55963e5745c97a5d674dead80e7d2c4d24aeb
+kind: ConfigMap
+metadata:
+  annotations:
+    operator.ibm.com/referenced-by-odlm-resource: OperandConfig.ibm-common-services.common-service
+    version: 4.9.0
+  labels:
+    operator.ibm.com/managedByCsOperator: "true"
+    operator.ibm.com/watched-by-odlm: "true"
+  name: cloud-native-postgresql-image-list

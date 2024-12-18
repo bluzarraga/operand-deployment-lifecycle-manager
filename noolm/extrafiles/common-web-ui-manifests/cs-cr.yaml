@@ -1,0 +1,13 @@
+apiVersion: operator.ibm.com/v3
+kind: CommonService
+metadata:
+  annotations:
+  labels:
+    foundationservices.cloudpak.ibm.com: commonservice
+  name: common-service
+spec:
+  license:
+    accept: false
+  operatorNamespace: ibm-common-services
+  servicesNamespace: ibm-common-services
+  size: starterset

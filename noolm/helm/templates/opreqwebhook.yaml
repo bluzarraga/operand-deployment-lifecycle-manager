@@ -1,0 +1,51 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  creationTimestamp: "2024-12-12T15:38:48Z"
+  generateName: moperandrequest.kb.io-
+  generation: 154
+  labels:
+    olm.managed: "true"
+    olm.owner: ibm-common-service-operator.v4.9.0
+    olm.owner.kind: ClusterServiceVersion
+    olm.owner.namespace: cs-op
+    olm.webhook-description-generate-name: moperandrequest.kb.io
+    olm.webhook-description-hash: BfiUPK8k0HjmuA1LXopV8bQyysj7DieipfcW7
+  name: moperandrequest.kb.io-tmhwm
+  resourceVersion: "557950"
+  uid: fc836d42-a8eb-4ab0-b155-b48488cc14b0
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ1ekNDQVdLZ0F3SUJBZ0lJWUdQWmh2aVUrbXd3Q2dZSUtvWkl6ajBFQXdJd1FqRVdNQlFHQTFVRUNoTU4KVW1Wa0lFaGhkQ3dnU1c1akxqRW9NQ1lHQTFVRUF4TWZiMnh0TFhObGJHWnphV2R1WldRdE5qQTJNMlE1T0RabQpPRGswWm1FMll6QWVGdzB5TkRFeU1USXhOVE00TkRoYUZ3MHlOakV5TVRJeE5UTTRORGhhTUVJeEZqQVVCZ05WCkJBb1REVkpsWkNCSVlYUXNJRWx1WXk0eEtEQW1CZ05WQkFNVEgyOXNiUzF6Wld4bWMybG5ibVZrTFRZd05qTmsKT1RnMlpqZzVOR1poTm1Nd1dUQVRCZ2NxaGtqT1BRSUJCZ2dxaGtqT1BRTUJCd05DQUFRZFIvT2ExVzd6akw0awovbUhuL3JpWnJ6MEZHR21sWkdyTjZvUmM3bUcxRGsvbVNkUmYzb3FDM2xuT1dQQTl5SGZ0elJmRG9rOUVLUjlvCnAySURveHhwbzBJd1FEQU9CZ05WSFE4QkFmOEVCQU1DQWdRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlYKSFE0RUZnUVVjUFBITDNUYXJia3hCYlVVYnZZWmlVSG56NzB3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnQ2ZQVgp0aGdZdWNYZWpCUGdkS09CTE5rdm1kOVBDWVRFSUtyZk9LL3VTQ3dDSUZPZUhSR0NjTVVtb3ZjSzdVQllFNWJjCkRmaG4vT2VmTENkMFZueDNvMFNNCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    service:
+      name: ibm-common-service-operator-service
+      namespace: cs-op
+      path: /mutate-operator-ibm-com-v1alpha1-operandrequest
+      port: 443
+  failurePolicy: Ignore
+  matchPolicy: Equivalent
+  name: moperandrequest.kb.io
+  namespaceSelector:
+    matchExpressions:
+    - key: kubernetes.io/metadata.name
+      operator: In
+      values:
+      - cs-op
+      - cs-serv
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - operator.ibm.com
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - operandrequests
+    scope: '*'
+  sideEffects: None
+  timeoutSeconds: 10
