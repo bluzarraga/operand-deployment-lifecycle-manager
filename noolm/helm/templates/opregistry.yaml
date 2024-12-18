@@ -163,14 +163,12 @@ spec:
     namespace: {{ .Values.namespace }}
     packageName: cloud-native-postgresql
     scope: public
-  - channel: stable-v1.22
-    fallbackChannels:
-    - stable
+  - channel: v3
     installPlanApproval: Automatic
     name: cloud-native-postgresql-v1.22
     namespace: {{ .Values.namespace }}
     operatorConfig: cloud-native-postgresql-operator-config
-    packageName: cloud-native-postgresql
+    packageName: ibm-events-operator
     scope: public
   - channel: alpha
     installPlanApproval: Automatic
@@ -378,12 +376,10 @@ spec:
     operatorConfig: cloud-native-postgresql-operator-config
     packageName: cloud-native-postgresql
     scope: public
-  - channel: stable-v1.22
-    fallbackChannels:
-    - stable
+  - channel: v3
     installPlanApproval: Automatic
     name: common-service-postgresql
     namespace: {{ .Values.namespace }}
     operatorConfig: cloud-native-postgresql-operator-config
-    packageName: cloud-native-postgresql
+    packageName: ibm-events-operator
     scope: public
