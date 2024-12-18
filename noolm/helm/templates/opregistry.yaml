@@ -143,18 +143,18 @@ spec:
     namespace: {{ .Values.namespace }}
     packageName: ibm-zen-operator
     scope: public
-  - channel: v4.5
+  - channel: v3 #test
     installPlanApproval: Automatic
     name: ibm-idp-config-ui-operator
     namespace: {{ .Values.namespace }}
-    packageName: ibm-commonui-operator-app
+    packageName: ibm-events-operator #test
     scope: public
-  - channel: stable
+  - channel: v3 #test
     installPlanApproval: Automatic
     name: cloud-native-postgresql
     namespace: {{ .Values.namespace }}
     operatorConfig: cloud-native-postgresql-operator-config
-    packageName: cloud-native-postgresql
+    packageName: ibm-events-operator #test
     scope: public
   - channel: stable
     installMode: no-op
