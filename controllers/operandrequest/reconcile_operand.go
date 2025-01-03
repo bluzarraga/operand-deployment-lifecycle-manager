@@ -103,7 +103,7 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 				return merr
 			}
 
-			if !opdRegistry.UserManaged {
+			if !opdRegistry.UserManaged || !registryInstance.Spec.Noolm {
 				if sub == nil {
 					klog.Warningf("There is no Subscription %s or %s in the namespace %s and %s", operatorName, opdRegistry.PackageName, namespace, registryInstance.Namespace)
 					continue
