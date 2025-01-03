@@ -305,11 +305,9 @@ func (r *Reconciler) reconcileCRwithConfig(ctx context.Context, service *operato
 	var almExampleList []interface{}
 	err := json.Unmarshal([]byte(almExamples), &almExampleList)
 	if err != nil {
-		if registryInstance.Spec.Noolm == false {
-			return errors.Wrapf(err, "failed to convert alm-examples in the Subscription %s/%s to slice", opConfigNs, service.Name)
-		} else {
-			klog.Warningf("alm examples error %s", err)
-		}
+		//TODO handle more gracefully
+		//return errors.Wrapf(err, "failed to convert alm-examples in the Subscription %s/%s to slice", opConfigNs, service.Name)
+		klog.Warningf("alm examples error %s", err)
 	}
 
 	foundMap := make(map[string]bool)
