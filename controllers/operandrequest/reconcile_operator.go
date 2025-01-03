@@ -96,7 +96,7 @@ func (r *Reconciler) reconcileOperator(ctx context.Context, requestInstance *ope
 		}
 
 		// reconcile subscription in batch
-		if registryInstance.Spec.Noolm == false || registryInstance.Spec.Noolm == nil {
+		if registryInstance.Spec.Noolm == false {
 			for i := 0; i < len(req.Operands); i += chunkSize {
 				j := i + chunkSize
 				if j > len(req.Operands) {
