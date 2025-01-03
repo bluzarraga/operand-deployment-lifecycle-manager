@@ -118,6 +118,8 @@ func (r *Reconciler) reconcileOperator(ctx context.Context, requestInstance *ope
 				}
 				wg.Wait()
 			}
+		} else {
+			klog.V(1).Infof("No olm specified, skipping subscription install.")
 		}
 
 		if len(merr.Errors) != 0 {
