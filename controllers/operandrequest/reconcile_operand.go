@@ -107,7 +107,6 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 				if sub == nil {
 					klog.Warningf("There is no Subscription %s or %s in the namespace %s and %s", operatorName, opdRegistry.PackageName, namespace, registryInstance.Namespace)
 					if registryInstance.Spec.Noolm == false {
-						klog.Infof("noolm = %s", registryInstance.Spec.Noolm)
 						continue
 					}
 				}
@@ -122,7 +121,6 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 					klog.Warningf("The Installplan for Subscription %s is not ready. Will check it again", sub.Name)
 					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorInstalling, "", &r.Mutex)
 					if registryInstance.Spec.Noolm == false {
-						klog.Infof("noolm = %s", registryInstance.Spec.Noolm)
 						continue
 					}
 				}
@@ -143,7 +141,6 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 					klog.Errorf("installplan %s/%s is failed", ipNamespace, ipName)
 					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
 					if registryInstance.Spec.Noolm == false {
-						klog.Infof("noolm = %s", registryInstance.Spec.Noolm)
 						continue
 					}
 				}
