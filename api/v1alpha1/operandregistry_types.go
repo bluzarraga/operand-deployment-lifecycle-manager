@@ -110,6 +110,7 @@ type OperandRegistrySpec struct {
 	// +operator-sdk:csv:customresourcedefinitions:type=spec,displayName="Operators Registry List"
 	// +optional
 	Operators []Operator `json:"operators,omitempty"`
+	Noolm bool `json:"noolm"`
 }
 
 // OperandRegistryStatus defines the observed state of OperandRegistry.

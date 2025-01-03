@@ -96,26 +96,28 @@ func (r *Reconciler) reconcileOperator(ctx context.Context, requestInstance *ope
 		}
 
 		// reconcile subscription in batch
-		for i := 0; i < len(req.Operands); i += chunkSize {
-			j := i + chunkSize
-			if j > len(req.Operands) {
-				j = len(req.Operands)
+		if registryInstance.Spec.Noolm == false || registryInstance.Spec.Noolm == nil {
+			for i := 0; i < len(req.Operands); i += chunkSize {
+				j := i + chunkSize
+				if j > len(req.Operands) {
+					j = len(req.Operands)
+				}
+				var (
+					wg sync.WaitGroup
+				)
+				for _, operand := range req.Operands[i:j] {
+					wg.Add(1)
+					go func(ctx context.Context, requestInstance *operatorv1alpha1.OperandRequest, registryInstance *operatorv1alpha1.OperandRegistry, operand operatorv1alpha1.Operand, registryKey types.NamespacedName, mu *sync.Mutex) {
+						defer wg.Done()
+						if err := r.reconcileSubscription(ctx, requestInstance, registryInstance, operand, registryKey, mu); err != nil {
+							mu.Lock()
+							defer mu.Unlock()
+							merr.Add(err)
+						}
+					}(ctx, requestInstance, registryInstance, operand, registryKey, &r.Mutex)
+				}
+				wg.Wait()
 			}
-			var (
-				wg sync.WaitGroup
-			)
-			for _, operand := range req.Operands[i:j] {
-				wg.Add(1)
-				go func(ctx context.Context, requestInstance *operatorv1alpha1.OperandRequest, registryInstance *operatorv1alpha1.OperandRegistry, operand operatorv1alpha1.Operand, registryKey types.NamespacedName, mu *sync.Mutex) {
-					defer wg.Done()
-					if err := r.reconcileSubscription(ctx, requestInstance, registryInstance, operand, registryKey, mu); err != nil {
-						mu.Lock()
-						defer mu.Unlock()
-						merr.Add(err)
-					}
-				}(ctx, requestInstance, registryInstance, operand, registryKey, &r.Mutex)
-			}
-			wg.Wait()
 		}
 
 		if len(merr.Errors) != 0 {
