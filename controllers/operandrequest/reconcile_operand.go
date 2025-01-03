@@ -103,88 +103,90 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 				return merr
 			}
 			klog.Infof("noolm = %s", registryInstance.Spec.Noolm)
-			if !opdRegistry.UserManaged || registryInstance.Spec.Noolm == false{
-				if sub == nil {
-					klog.Warningf("There is no Subscription %s or %s in the namespace %s and %s", operatorName, opdRegistry.PackageName, namespace, registryInstance.Namespace)
-					continue
+			if registryInstance.Spec.Noolm == false {
+				if !opdRegistry.UserManaged {
+					if sub == nil {
+						klog.Warningf("There is no Subscription %s or %s in the namespace %s and %s", operatorName, opdRegistry.PackageName, namespace, registryInstance.Namespace)
+						continue
+					}
+
+					if _, ok := sub.Labels[constant.OpreqLabel]; !ok {
+						// Subscription existing and not managed by OperandRequest controller
+						klog.Warningf("Subscription %s in the namespace %s isn't created by ODLM", sub.Name, sub.Namespace)
+					}
+
+					// It the installplan is not created yet, ODLM will try later
+					if sub.Status.Install == nil || sub.Status.InstallPlanRef.Name == "" {
+						klog.Warningf("The Installplan for Subscription %s is not ready. Will check it again", sub.Name)
+						requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorInstalling, "", &r.Mutex)
+						continue
+					}
+
+					// If the installplan is deleted after is completed, ODLM won't block the CR update.
+					ipName := sub.Status.InstallPlanRef.Name
+					ipNamespace := sub.Namespace
+					ip := &olmv1alpha1.InstallPlan{}
+					ipKey := types.NamespacedName{
+						Name:      ipName,
+						Namespace: ipNamespace,
+					}
+					if err := r.Client.Get(ctx, ipKey, ip); err != nil {
+						if !apierrors.IsNotFound(err) {
+							merr.Add(errors.Wrapf(err, "failed to get Installplan"))
+						}
+					} else if ip.Status.Phase == olmv1alpha1.InstallPlanPhaseFailed {
+						klog.Errorf("installplan %s/%s is failed", ipNamespace, ipName)
+						requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
+						continue
+					}
+
 				}
 
-				if _, ok := sub.Labels[constant.OpreqLabel]; !ok {
-					// Subscription existing and not managed by OperandRequest controller
-					klog.Warningf("Subscription %s in the namespace %s isn't created by ODLM", sub.Name, sub.Namespace)
+				var csv *olmv1alpha1.ClusterServiceVersion
+
+				if opdRegistry.UserManaged {
+					csvList, err := r.GetClusterServiceVersionListFromPackage(ctx, opdRegistry.PackageName, opdRegistry.Namespace)
+					if err != nil {
+						merr.Add(err)
+						requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
+						continue
+					}
+					csv = csvList[0]
+				} else {
+					csv, err = r.GetClusterServiceVersion(ctx, sub)
+					// If can't get CSV, requeue the request
+					if err != nil {
+						merr.Add(err)
+						requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
+						continue
+					}
 				}
 
-				// It the installplan is not created yet, ODLM will try later
-				if sub.Status.Install == nil || sub.Status.InstallPlanRef.Name == "" {
-					klog.Warningf("The Installplan for Subscription %s is not ready. Will check it again", sub.Name)
+				if csv == nil {
+					klog.Warningf("ClusterServiceVersion for the Subscription %s in the namespace %s is not ready yet, retry", operatorName, namespace)
 					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorInstalling, "", &r.Mutex)
 					continue
 				}
 
-				// If the installplan is deleted after is completed, ODLM won't block the CR update.
-				ipName := sub.Status.InstallPlanRef.Name
-				ipNamespace := sub.Namespace
-				ip := &olmv1alpha1.InstallPlan{}
-				ipKey := types.NamespacedName{
-					Name:      ipName,
-					Namespace: ipNamespace,
+				if err := r.DeleteRedundantCSV(ctx, csv.Name, csv.Namespace, registryKey.Namespace, opdRegistry.PackageName); err != nil {
+					merr.Add(errors.Wrapf(err, "failed to delete the redundant ClusterServiceVersion %s in the namespace %s", csv.Name, csv.Namespace))
+					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
+					continue
 				}
-				if err := r.Client.Get(ctx, ipKey, ip); err != nil {
-					if !apierrors.IsNotFound(err) {
-						merr.Add(errors.Wrapf(err, "failed to get Installplan"))
+
+				if !opdRegistry.UserManaged {
+					// find the OperandRequest which has the same operator's channel or fallback channels as existing subscription.
+					// ODLM will only reconcile Operand based on OperandConfig for this OperandRequest
+					channels := []string{opdRegistry.Channel}
+					if channels = append(channels, opdRegistry.FallbackChannels...); !util.Contains(channels, sub.Spec.Channel) {
+						klog.Infof("Subscription %s in the namespace %s is NOT managed by %s/%s, Skip reconciling Operands", sub.Name, sub.Namespace, requestInstance.Namespace, requestInstance.Name)
+						requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
+						continue
 					}
-				} else if ip.Status.Phase == olmv1alpha1.InstallPlanPhaseFailed {
-					klog.Errorf("installplan %s/%s is failed", ipNamespace, ipName)
-					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
-					continue
 				}
 
+				klog.V(3).Info("Generating customresource base on ClusterServiceVersion: ", csv.GetName())
 			}
-
-			var csv *olmv1alpha1.ClusterServiceVersion
-
-			if opdRegistry.UserManaged {
-				csvList, err := r.GetClusterServiceVersionListFromPackage(ctx, opdRegistry.PackageName, opdRegistry.Namespace)
-				if err != nil {
-					merr.Add(err)
-					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
-					continue
-				}
-				csv = csvList[0]
-			} else {
-				csv, err = r.GetClusterServiceVersion(ctx, sub)
-				// If can't get CSV, requeue the request
-				if err != nil {
-					merr.Add(err)
-					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
-					continue
-				}
-			}
-
-			if csv == nil {
-				klog.Warningf("ClusterServiceVersion for the Subscription %s in the namespace %s is not ready yet, retry", operatorName, namespace)
-				requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorInstalling, "", &r.Mutex)
-				continue
-			}
-
-			if err := r.DeleteRedundantCSV(ctx, csv.Name, csv.Namespace, registryKey.Namespace, opdRegistry.PackageName); err != nil {
-				merr.Add(errors.Wrapf(err, "failed to delete the redundant ClusterServiceVersion %s in the namespace %s", csv.Name, csv.Namespace))
-				requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
-				continue
-			}
-
-			if !opdRegistry.UserManaged {
-				// find the OperandRequest which has the same operator's channel or fallback channels as existing subscription.
-				// ODLM will only reconcile Operand based on OperandConfig for this OperandRequest
-				channels := []string{opdRegistry.Channel}
-				if channels = append(channels, opdRegistry.FallbackChannels...); !util.Contains(channels, sub.Spec.Channel) {
-					klog.Infof("Subscription %s in the namespace %s is NOT managed by %s/%s, Skip reconciling Operands", sub.Name, sub.Namespace, requestInstance.Namespace, requestInstance.Name)
-					requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorFailed, "", &r.Mutex)
-					continue
-				}
-			}
-
-			klog.V(3).Info("Generating customresource base on ClusterServiceVersion: ", csv.GetName())
 			requestInstance.SetMemberStatus(operand.Name, operatorv1alpha1.OperatorRunning, "", &r.Mutex)
 
 			// Merge and Generate CR
