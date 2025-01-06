@@ -199,13 +199,11 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 						klog.V(2).Infof("There is no service: %s from the OperandConfig instance: %s/%s, Skip reconciling Operands", operand.Name, registryKey.Namespace, req.Registry)
 						continue
 					}
-					if registryInstance.Spec.Noolm == false {
-						err = r.reconcileCRwithConfig(ctx, opdConfig, configInstance.Name, configInstance.Namespace, csv, requestInstance, operand.Name, csv.Namespace, &r.Mutex)
-						if err != nil {
-							merr.Add(err)
-							requestInstance.SetMemberStatus(operand.Name, "", operatorv1alpha1.ServiceFailed, &r.Mutex)
-							continue
-						}
+					err = r.reconcileCRwithConfig(ctx, opdConfig, configInstance.Name, configInstance.Namespace, csv, requestInstance, operand.Name, csv.Namespace, &r.Mutex)
+					if err != nil {
+						merr.Add(err)
+						requestInstance.SetMemberStatus(operand.Name, "", operatorv1alpha1.ServiceFailed, &r.Mutex)
+						continue
 					}
 				} else if apierrors.IsNotFound(err) {
 					klog.Infof("Not Found OperandConfig: %s/%s", operand.Name, err)
@@ -215,13 +213,11 @@ func (r *Reconciler) reconcileOperand(ctx context.Context, requestInstance *oper
 				}
 
 			} else {
-				if registryInstance.Spec.Noolm == false {
-					err = r.reconcileCRwithRequest(ctx, requestInstance, operand, types.NamespacedName{Name: requestInstance.Name, Namespace: requestInstance.Namespace}, i, csv.Namespace, &r.Mutex)
-					if err != nil {
-						merr.Add(err)
-						requestInstance.SetMemberStatus(operand.Name, "", operatorv1alpha1.ServiceFailed, &r.Mutex)
-						continue
-					}
+				err = r.reconcileCRwithRequest(ctx, requestInstance, operand, types.NamespacedName{Name: requestInstance.Name, Namespace: requestInstance.Namespace}, i, csv.Namespace, &r.Mutex)
+				if err != nil {
+					merr.Add(err)
+					requestInstance.SetMemberStatus(operand.Name, "", operatorv1alpha1.ServiceFailed, &r.Mutex)
+					continue
 				}
 			}
 			requestInstance.SetMemberStatus(operand.Name, "", operatorv1alpha1.ServiceRunning, &r.Mutex)
