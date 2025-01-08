@@ -98,7 +98,7 @@ func GetWatchNamespace() string {
 }
 
 // GetNoOLM returns boolean NoOLM enabled
-func GetWatchNamespace() bool {
+func GetNoOLM() bool {
 	enabled, found := os.LookupEnv("NO_OLM")
 	if !found {
 		return false
