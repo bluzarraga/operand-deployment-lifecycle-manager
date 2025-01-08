@@ -123,12 +123,23 @@ func main() {
 		klog.Errorf("unable to start manager: %v", err)
 		os.Exit(1)
 	}
-	if err = (&operandrequest.Reconciler{
-		ODLMOperator: deploy.NewODLMOperator(mgr, "OperandRequest"),
-		StepSize:     *stepSize,
-	}).SetupWithManager(mgr); err != nil {
-		klog.Errorf("unable to create controller OperandRequest: %v", err)
-		os.Exit(1)
+	noolm := util.GetNoOLM()
+	if noolm {
+		if err = (&operandrequestnoolm.Reconciler{
+			ODLMOperator: deploy.NewODLMOperator(mgr, "OperandRequest"),
+			StepSize:     *stepSize,
+		}).SetupWithManager(mgr); err != nil {
+			klog.Errorf("unable to create controller OperandRequest: %v", err)
+			os.Exit(1)
+		}
+	} else {
+		if err = (&operandrequest.Reconciler{
+			ODLMOperator: deploy.NewODLMOperator(mgr, "OperandRequest"),
+			StepSize:     *stepSize,
+		}).SetupWithManager(mgr); err != nil {
+			klog.Errorf("unable to create controller OperandRequest: %v", err)
+			os.Exit(1)
+		}
 	}
 	if err = (&operandconfig.Reconciler{
 		ODLMOperator: deploy.NewODLMOperator(mgr, "OperandConfig"),
