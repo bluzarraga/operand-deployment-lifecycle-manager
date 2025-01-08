@@ -124,7 +124,7 @@ func main() {
 		os.Exit(1)
 	}
 	noolm := util.GetNoOLM()
-	if noolm {
+	if noolm == "true" {
 		if err = (&operandrequestnoolm.Reconciler{
 			ODLMOperator: deploy.NewODLMOperator(mgr, "OperandRequest"),
 			StepSize:     *stepSize,

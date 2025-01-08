@@ -98,12 +98,12 @@ func GetWatchNamespace() string {
 }
 
 // GetNoOLM returns boolean NoOLM enabled
-func GetNoOLM() bool {
+func GetNoOLM() string {
 	enabled, found := os.LookupEnv("NO_OLM")
 	if !found {
-		return false
+		return "false"
 	}
-	return strconv.ParseBool(enabled)
+	return enabled
 }
 
 // GetInstallScope returns the scope of the installation
