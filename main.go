@@ -47,6 +47,7 @@ import (
 	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operandconfig"
 	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operandregistry"
 	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operandrequest"
+	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operandrequestnoolm"
 	deploy "github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operator"
 	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operatorchecker"
 	"github.com/IBM/operand-deployment-lifecycle-manager/v4/controllers/operatorconfig"
