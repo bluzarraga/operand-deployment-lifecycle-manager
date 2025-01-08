@@ -103,7 +103,7 @@ func GetNoOLM() bool {
 	if !found {
 		return false
 	}
-	return enabled
+	return strconv.ParseBool(enabled)
 }
 
 // GetInstallScope returns the scope of the installation
